@@ -15,6 +15,12 @@ type XY struct {
 	X, Y int
 }
 
+var directions = []XY{
+	{-1, -1}, {0, -1}, {+1, -1},
+	{-1, 0} /* start */, {+1, 0},
+	{-1, +1}, {0, +1}, {+1, +1},
+}
+
 func Part1(input string) int {
 	grid := make(map[XY]byte)
 
@@ -41,29 +47,10 @@ func Part1(input string) int {
 
 func removable(xy XY, grid map[XY]byte) bool {
 	adjacentRolls := 0
-	if grid[XY{xy.X - 1, xy.Y - 1}] == '@' {
-		adjacentRolls++
-	}
-	if grid[XY{xy.X - 1, xy.Y}] == '@' {
-		adjacentRolls++
-	}
-	if grid[XY{xy.X - 1, xy.Y + 1}] == '@' {
-		adjacentRolls++
-	}
-	if grid[XY{xy.X, xy.Y - 1}] == '@' {
-		adjacentRolls++
-	}
-	if grid[XY{xy.X, xy.Y + 1}] == '@' {
-		adjacentRolls++
-	}
-	if grid[XY{xy.X + 1, xy.Y - 1}] == '@' {
-		adjacentRolls++
-	}
-	if grid[XY{xy.X + 1, xy.Y}] == '@' {
-		adjacentRolls++
-	}
-	if grid[XY{xy.X + 1, xy.Y + 1}] == '@' {
-		adjacentRolls++
+	for _, dir := range directions {
+		if grid[XY{xy.X + dir.X, xy.Y + dir.Y}] == '@' {
+			adjacentRolls++
+		}
 	}
 	return adjacentRolls < 4
 }
